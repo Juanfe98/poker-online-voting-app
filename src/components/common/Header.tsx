@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import { ColorModeSwitcher } from '../../ColorModeSwitcher'
 
 const Header: React.FC = () => {
