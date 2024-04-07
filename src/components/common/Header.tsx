@@ -1,11 +1,8 @@
-import React from 'react';
-import { Flex, Text, Box, useColorModeValue } from '@chakra-ui/react';
-import { ColorModeSwitcher } from '../../ColorModeSwitcher';
+import React from 'react'
+import { Flex, Text, useColorModeValue } from '@chakra-ui/react'
+import { ColorModeSwitcher } from '../../ColorModeSwitcher'
 
 const Header: React.FC = () => {
-  const bgColor = useColorModeValue('teal.500', 'teal.200');
-  const textColor = useColorModeValue('white', 'gray.800');
-
   return (
     <Flex
       as="nav"
@@ -14,21 +11,17 @@ const Header: React.FC = () => {
       wrap="wrap"
       paddingX="2rem"
       paddingY="1rem"
-      bg={bgColor}
-      color={textColor}
       width="100%"
     >
       <Flex align="center" mr={5}>
-        <Text fontSize="lg" fontWeight="bold">
-          Ready for Refinement?
+        <Text fontSize="x-large" fontWeight="bold">
+          Ready to start pointing?
         </Text>
       </Flex>
 
-      <Box display="flex" alignItems="center">
-       <ColorModeSwitcher />
-      </Box>
+      <ColorModeSwitcher />
     </Flex>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
