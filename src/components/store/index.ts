@@ -1,26 +1,34 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-import { PointingType, TeamMember } from './types'
+import { CurrentUser, PointingType } from './types'
 
 interface zustandState {
-  teamMembers: TeamMember[]
+  currentUser: CurrentUser
+  teamMembers: string[]
   pointingType: PointingType
-  addTeamMember: (teamMember: TeamMember) => void
+  setTeamMembers: (teamMember: string[]) => void
   setPointingType: (value: PointingType) => void
+  setCurrentUser: (value: CurrentUser) => void
 }
 
 export const useZustandState = create<zustandState>()(
   devtools(set => ({
+    currentUser: { id: '', name: '' },
     teamMembers: [],
     pointingType: 'fibonacci',
-    addTeamMember: teamMember =>
+    // This method will fully override the content of teamMembers with the new array
+    setTeamMembers: teamMembers =>
       set(state => ({
-        teamMembers: [...state.teamMembers, teamMember]
+        teamMembers
       })),
-    setPointingType: type =>
+    setPointingType: pointingType =>
       set(() => ({
-        pointingType: type
+        pointingType
+      })),
+    setCurrentUser: currentUser =>
+      set(() => ({
+        currentUser
       }))
   }))
 )
