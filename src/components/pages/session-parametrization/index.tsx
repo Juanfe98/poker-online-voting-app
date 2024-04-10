@@ -9,6 +9,7 @@ import {
   Stack,
   Text
 } from '@chakra-ui/react'
+import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 import { useZustandState } from '../../store'
 
@@ -18,7 +19,8 @@ const SessionParametrization: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    navigate('/poker/game')
+    const sessionId = uuidv4()
+    navigate(`/poker/game/${sessionId}`)
   }
 
   return (
