@@ -2,18 +2,21 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import socket from '../../../socket-connection'
-import { Box, Flex, SimpleGrid, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import { useZustandState } from '../../store'
 import UserJoin from '../user-join'
 import VoteForm from './components/vote-form'
 import { TeamMember } from '../../store/types'
 import UserCard from './components/user-card'
+import RevealVotesButton from './components/RevealVotesButton'
 
 function RefinementSession() {
   let { sessionId } = useParams()
   const teamMembers = useZustandState(state => state.teamMembers)
+  const showVotes = useZustandState(state => state.showVotes)
   const currentUser = useZustandState(state => state.currentUser)
   const setTeamMembers = useZustandState(state => state.setTeamMembers)
+  const setShowVotes = useZustandState(state => state.setShowVotes)
   const updateTeamMember = useZustandState(state => state.updateTeamMember)
 
   useEffect(() => {
@@ -25,20 +28,29 @@ function RefinementSession() {
         setTeamMembers(updatedTeamMembers)
       }
 
+      // setTeamMembers([{ id: 'asda', name: 'juan' }])
       const handleUserVote = (voteDetails: TeamMember) => {
         updateTeamMember({ ...voteDetails, hasVoted: true })
+      }
+
+      const handleShowVotesEvent = (showVotes: boolean) => {
+        setShowVotes(showVotes);
       }
 
       // Listen for session updates
       socket.on('sessionUpdated', handleSessionUpdate)
 
-      // Listen for users voteds
+      // Listen for users votes
       socket.on('vote', handleUserVote)
+
+      // Listen for show all votes event
+      socket.on('showVotes', handleShowVotesEvent)
 
       // Clean up listeners when component unmounts, currentUser or sessionId changes
       return () => {
         socket.off('sessionUpdated', handleSessionUpdate)
-        socket.off('vote', handleUserVote) // Add this line
+        socket.off('vote', handleUserVote) 
+        socket.off('showVotes', handleUserVote)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +68,9 @@ function RefinementSession() {
     socket.emit('vote', { sessionId, voteDetails: vote })
   }
 
-  console.log('🚀 ~ RefinementSession ~ teamMembers:', teamMembers)
+  const handleShowVotes = () => {
+    socket.emit('showVotes', { sessionId, showVotes: true })
+  }
 
   return (
     <Flex
@@ -69,11 +83,11 @@ function RefinementSession() {
         {' '}
         Team Stimate{' '}
       </Text>
-      <SimpleGrid columns={[2, null, 10]} spacing={10} justifyItems="center">
-        {teamMembers.map(user => (
-          <UserCard teamMember={user}/>
-        ))}
-      </SimpleGrid>
+
+      {teamMembers.map(user => (
+        <UserCard teamMember={user} showVotes={showVotes} />
+      ))}
+      <RevealVotesButton onClick={handleShowVotes} />
 
       <VoteForm handleSubmit={handleVoteSubmit} />
     </Flex>
