@@ -1,11 +1,29 @@
 import { Flex, Text } from '@chakra-ui/react'
 import VoteCard from './components/vote-card'
+import { useZustandState } from '../../../../store'
 
 interface VoteFormProps {
   handleSubmit: (e: any) => void
 }
 
 export default function VoteForm({ handleSubmit }: VoteFormProps) {
+  const pointingType = useZustandState(state => state.pointingType)
+
+  const getPointingNumbers = () => {
+    switch (pointingType) {
+      case 'fibonacci':
+        return [1, 2, 3, 5, 8, 13, 20, 40, 100]
+      case 'powersOfTwo':
+        return [1, 2, 4, 8, 16, 32]
+      case 'smallValues':
+        return [1, 2, 3, 5, 8, 13]
+      case 'tShirtSizing':
+        return ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL']
+      default:
+        return [1, 2, 3, 5, 8, 13]
+    }
+  }
+
   return (
     <>
       <Text alignSelf="flex-start" fontSize="3xl" fontWeight={500}>
@@ -19,9 +37,9 @@ export default function VoteForm({ handleSubmit }: VoteFormProps) {
         gap="1rem"
         wrap="wrap"
       >
-        <VoteCard handleSubmit={handleSubmit} value={1} />
-        <VoteCard handleSubmit={handleSubmit} value={3} />
-        <VoteCard handleSubmit={handleSubmit} value={5} />
+        {getPointingNumbers().map(number => (
+          <VoteCard handleSubmit={handleSubmit} value={number} />
+        ))}
       </Flex>
     </>
   )
