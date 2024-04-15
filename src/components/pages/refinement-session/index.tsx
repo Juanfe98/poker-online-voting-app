@@ -34,7 +34,7 @@ function RefinementSession() {
       }
 
       const handleShowVotesEvent = (showVotes: boolean) => {
-        setShowVotes(showVotes);
+        setShowVotes(showVotes)
       }
 
       // Listen for session updates
@@ -49,7 +49,7 @@ function RefinementSession() {
       // Clean up listeners when component unmounts, currentUser or sessionId changes
       return () => {
         socket.off('sessionUpdated', handleSessionUpdate)
-        socket.off('vote', handleUserVote) 
+        socket.off('vote', handleUserVote)
         socket.off('showVotes', handleUserVote)
       }
     }
@@ -84,9 +84,12 @@ function RefinementSession() {
         Team Stimate{' '}
       </Text>
 
-      {teamMembers.map(user => (
-        <UserCard teamMember={user} showVotes={showVotes} />
-      ))}
+      <Flex gap="2rem">
+        {teamMembers.map(user => (
+          <UserCard teamMember={user} showVotes={showVotes} />
+        ))}
+      </Flex>
+
       <RevealVotesButton onClick={handleShowVotes} />
 
       <VoteForm handleSubmit={handleVoteSubmit} />

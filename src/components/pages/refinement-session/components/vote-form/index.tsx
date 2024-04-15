@@ -14,18 +14,14 @@ export default function VoteForm({ handleSubmit }: VoteFormProps) {
       </Text>
       <Flex
         w="100%"
-        alignItems="flex-start"
-        justifyContent="flex-start"
+        alignItems="center"
+        justifyContent="center"
         gap="1rem"
         wrap="wrap"
       >
         <VoteCard handleSubmit={handleSubmit} value={1} />
         <VoteCard handleSubmit={handleSubmit} value={3} />
         <VoteCard handleSubmit={handleSubmit} value={5} />
-        {/* <VoteCard />
-        <VoteCard />
-        <VoteCard />
-        <VoteCard /> */}
       </Flex>
     </>
   )
