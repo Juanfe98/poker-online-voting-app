@@ -8,7 +8,7 @@ import UserJoin from '../user-join'
 import VoteForm from './components/vote-form'
 import { TeamMember } from '../../store/types'
 import UserCard from './components/user-card'
-import RevealVotesButton from './components/RevealVotesButton'
+import ActionButton from '../../common/ActionButton'
 
 function RefinementSession() {
   let { sessionId } = useParams()
@@ -72,6 +72,13 @@ function RefinementSession() {
     socket.emit('showVotes', { sessionId, showVotes: true })
   }
 
+  const handleNewVote = () => {
+    setTeamMembers(
+      teamMembers.map(teamMember => ({ ...teamMember, hasVoted: false }))
+    )
+    setShowVotes(false)
+  }
+
   return (
     <Flex
       justifyContent="center"
@@ -79,10 +86,13 @@ function RefinementSession() {
       direction="column"
       gap="3rem"
     >
-      <Text alignSelf="flex-start" fontSize="3xl" fontWeight={500}>
-        {' '}
-        Team Stimate{' '}
-      </Text>
+      <Flex w="100%" justifyContent="space-between">
+        <Text alignSelf="flex-start" fontSize="3xl" fontWeight={500}>
+          {' '}
+          Team Stimate{' '}
+        </Text>
+        <ActionButton onClick={handleNewVote} text="New Vote" />
+      </Flex>
 
       <Flex gap="2rem">
         {teamMembers.map(user => (
@@ -90,7 +100,7 @@ function RefinementSession() {
         ))}
       </Flex>
 
-      <RevealVotesButton onClick={handleShowVotes} />
+      <ActionButton onClick={handleShowVotes} text="Reveal Cards" />
 
       <VoteForm handleSubmit={handleVoteSubmit} />
     </Flex>
